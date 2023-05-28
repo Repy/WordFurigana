@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibNMeCab" Version="0.10.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\unk.dic" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\sys.dic" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\matrix.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\COPYING" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\char.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\AUTHORS" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\AUTHORS" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\gamec\.nuget\packages\libnmecab.ipadicbin\0.10.0\build\..\content\IpaDic\char.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="IpaDic.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="IpaDic.zip" />
+  </ItemGroup>
+
+</Project>
