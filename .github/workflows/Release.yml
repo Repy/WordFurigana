@@ -34,7 +34,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      run: msbuild ${{ env.Project_Name }} /t:Restore /p:Configuration=${{ env.Configuration }}
 
     - name: Install pfx
       run: |
@@ -43,12 +43,12 @@ jobs:
         Import-PfxCertificate -FilePath "key.pfx" -CertStoreLocation "Cert:\CurrentUser\My" -Password (ConvertTo-SecureString -String "${{ secrets.CERTIFICATE_PASS }}" -AsPlainText -Force)
 
     - name: Create the app package
-      run: msbuild $env:Project_Path /target:Publish /p:Configuration=$env:Configuration
+      run: msbuild ${{ env.Project_Name }} /target:Publish /p:Configuration=${{ env.Configuration }}
       
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
-        path: "${{ env.Project_Path }}\\publish"
+        path: ${{ env.Project_Name }}\publish
         
     - name: Deploy to GitHub Pages
       id: deployment
