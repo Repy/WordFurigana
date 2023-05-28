@@ -2,8 +2,15 @@ name: Release
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -20,10 +27,13 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 4.7.2
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
@@ -39,3 +49,12 @@ jobs:
 
     - name: Create the app package
       run: msbuild $env:Project_Path /target:Publish /p:Configuration=$env:Configuration
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: '$env:Project_Path/publish'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
