@@ -34,8 +34,8 @@ jobs:
     - name: Install pfx
       run: |
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.CERTIFICATE }}")
-        [IO.File]::WriteAllBytes("$certificatePath", key.pfx)
-        Import-PfxCertificate -FilePath key.pfx -CertStoreLocation "Cert:\CurrentUser\My" -Password (ConvertTo-SecureString -String "${{ secrets.CERTIFICATE_PASS }}" -AsPlainText -Force)
+        [IO.File]::WriteAllBytes("key.pfx", $pfx_cert_byte)
+        Import-PfxCertificate -FilePath "key.pfx" -CertStoreLocation "Cert:\CurrentUser\My" -Password (ConvertTo-SecureString -String "${{ secrets.CERTIFICATE_PASS }}" -AsPlainText -Force)
 
     - name: Create the app package
       run: msbuild $env:Project_Path /target:Publish /p:Configuration=$env:Configuration
