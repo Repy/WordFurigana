@@ -34,7 +34,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Restore the application
-      run: msbuild ${{ env.Project_Name }} /t:Restore /p:Configuration=${{ env.Configuration }}
+      run: msbuild /t:Restore /p:Configuration=${{ env.Configuration }}
 
     - name: Install pfx
       run: |
@@ -48,7 +48,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
-        path: ${{ env.Project_Name }}/publish
+        path: ${{ env.Project_Name }}\bin\Release\app.publish
         
     - name: Deploy to GitHub Pages
       id: deployment
