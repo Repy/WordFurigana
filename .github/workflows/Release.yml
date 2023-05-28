@@ -35,7 +35,7 @@ jobs:
 
     - name: Create the app package
       run: |
-        msbuild ${{ env.Project_Name }} /target:Publish /p:Configuration=${{ env.Configuration }}
+        msbuild ${{ env.Project_Name }} /target:build /p:Configuration=${{ env.Configuration }}
         iscc Setup\setup.iss
       
     - name: Release
