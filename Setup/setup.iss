@@ -29,6 +29,7 @@ Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
 [Files]
 Source: "..\WordFurigana\bin\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\packages\LibNMeCab.0.10.2\lib\netstandard2.0\LibNMeCab.dll; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Office\Word\Addins\Repy.WordFurigana"; Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest"; ValueData: "{app}\WordFurigana.vsto|vstolocal"
