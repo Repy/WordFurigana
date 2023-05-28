@@ -43,4 +43,4 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          Setup\Release\WordFuriganaSetup.exe
+          WordFuriganaSetup.exe
