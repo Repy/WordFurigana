@@ -27,9 +27,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v3
-
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
@@ -43,13 +40,14 @@ jobs:
         Import-PfxCertificate -FilePath "key.pfx" -CertStoreLocation "Cert:\CurrentUser\My" -Password (ConvertTo-SecureString -String "${{ secrets.CERTIFICATE_PASS }}" -AsPlainText -Force)
 
     - name: Create the app package
-      run: msbuild ${{ env.Project_Name }} /target:Publish /p:Configuration=${{ env.Configuration }}
+      run: |
+        msbuild ${{ env.Project_Name }} /target:Publish /p:Configuration=${{ env.Configuration }}
+        Move-Item -Path ${{ env.Project_Name }}\bin\${{ env.Configuration }}\app.publish -Destination Installer
+        7z a Installer.zip Installer
       
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
       with:
-        path: ${{ env.Project_Name }}\bin\Release\app.publish
-        
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v2
+        files: |
+          Installer.zip
