@@ -21,36 +21,40 @@ namespace WordFurigana
         public void OnRubiButton(Office.IRibbonControl control)
         {
             var document = Globals.ThisAddIn.Application.ActiveDocument;
-            var parser = Globals.ThisAddIn.Parser;
 
-            Sentences sentences;
-
-            if (document.ActiveWindow.Selection.Type == Microsoft.Office.Interop.Word.WdSelectionType.wdNoSelection) {
-                sentences = document.Content.Sentences;
-            }
-            else {
-                sentences = document.ActiveWindow.Selection.Sentences;
-            }
-            foreach (Range sentence in sentences)
+            if (document.ActiveWindow.Selection.Type == Microsoft.Office.Interop.Word.WdSelectionType.wdSelectionIP)
             {
-                var text = sentence.Text;
-                var res = parser.Parse(text);
-                var ranges = new List<Range>();
-                var index = 0;
-                foreach (var item in res)
+                foreach (Range sentence in document.ActiveWindow.Selection.Sentences)
                 {
-                    ranges.Add(document.Range(sentence.Start + index, sentence.Start + index + item.Kanji.Length));
-                    index += item.Kanji.Length;
-                }
-                for (int i = ranges.Count - 1; i >= 0; i--)
-                {
-                    var range = ranges[i];
-                    var item = res[i];
-                    if (!item.Valid) continue;
-                    var newF = addRubyField(document, range, item);
+                    rangeKana(document, sentence);
                 }
             }
-            
+            else if (document.ActiveWindow.Selection.Type == Microsoft.Office.Interop.Word.WdSelectionType.wdSelectionNormal)
+            {
+                rangeKana(document, document.ActiveWindow.Selection.Range);
+            }
+
+        }
+
+        static void rangeKana(Document document, Range sentence)
+        {
+            var parser = Globals.ThisAddIn.Parser;
+            var text = sentence.Text;
+            var res = parser.Parse(text);
+            var ranges = new List<Range>();
+            var index = 0;
+            foreach (var item in res)
+            {
+                ranges.Add(document.Range(sentence.Start + index, sentence.Start + index + item.Kanji.Length));
+                index += item.Kanji.Length;
+            }
+            for (int i = ranges.Count - 1; i >= 0; i--)
+            {
+                var range = ranges[i];
+                var item = res[i];
+                if (!item.Valid) continue;
+                var newF = addRubyField(document, range, item);
+            }
         }
 
         static Field addField(Document document, Range range, string code)
@@ -61,7 +65,7 @@ namespace WordFurigana
         static Field addRubyField(Document document, Range range, IKanjiFuri kanjiFuri)
         {
             var size = range.FormattedText.Font.Size;
-            var f = addField(document, range, "EQ \\* jc2 \\* hps"+ size + " \\o(\\s\\up"+ size + "(" + kanjiFuri.Furi + ")," + kanjiFuri.Kanji + "))");
+            var f = addField(document, range, "EQ \\* jc2 \\* hps" + size + " \\o(\\s\\up" + size + "(" + kanjiFuri.Furi + ")," + kanjiFuri.Kanji + "))");
             f.Code.Text = f.Code.Text.Trim();
             return f;
         }
